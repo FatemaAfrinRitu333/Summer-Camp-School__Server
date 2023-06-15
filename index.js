@@ -30,16 +30,40 @@ async function run() {
 
     const classCollection = client.db("ChorusCamp").collection("classes");
     const instructorCollection = client.db("ChorusCamp").collection("instructors");
+    const userCollection = client.db("ChorusCamp").collection("users");
+    // const cartCollection = client.db("ChorusCamp").collection("cart");
+    // const paymentCollection = client.db("ChorusCamp").collection("payment");
 
+    // Class API
     app.get('/classes', async(req, res)=>{
       const sort = {studentsEnrolled: -1};
         const result = await classCollection.find().sort(sort).toArray();
         res.send(result);
     })
 
+    // Instructor API
     app.get('/instructors', async(req, res)=>{
       const sort = {studentsEnrolled: -1};
       const result = await instructorCollection.find().sort(sort).toArray();
+      res.send(result);
+    })
+
+    // Users API
+    app.get('/users', async(req, res)=>{
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
+    
+    app.post('/users', async(req, res)=>{
+      const user = req.body;
+      console.log(user);
+      const query = {email: user.email}
+      const existingUser = await userCollection.findOne(query);
+
+      if(existingUser){
+        return res.send({message: 'User Already Exists'})
+      }
+      const result = await userCollection.insertOne(user);
       res.send(result);
     })
 
