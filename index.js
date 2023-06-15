@@ -31,7 +31,7 @@ async function run() {
     const classCollection = client.db("ChorusCamp").collection("classes");
     const instructorCollection = client.db("ChorusCamp").collection("instructors");
     const userCollection = client.db("ChorusCamp").collection("users");
-    // const cartCollection = client.db("ChorusCamp").collection("cart");
+    const cartCollection = client.db("ChorusCamp").collection("cart");
     // const paymentCollection = client.db("ChorusCamp").collection("payment");
 
     // Class API
@@ -53,7 +53,7 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
-    
+
     app.post('/users', async(req, res)=>{
       const user = req.body;
       console.log(user);
@@ -65,6 +65,18 @@ async function run() {
       }
       const result = await userCollection.insertOne(user);
       res.send(result);
+    })
+
+    // Cart APIs
+    app.get('/cart', async(req, res)=>{
+      const email = req.query.email;
+
+      const result = await cartCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.post('/cart', async(req, res)=>{
+      
     })
 
 
