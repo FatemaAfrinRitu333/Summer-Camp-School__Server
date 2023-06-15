@@ -76,7 +76,9 @@ async function run() {
     })
 
     app.post('/cart', async(req, res)=>{
-      
+      const item = req.body;
+      const result = await cartCollection.insertOne(item);
+      res.send(result);
     })
 
 
