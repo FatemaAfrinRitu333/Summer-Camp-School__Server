@@ -123,6 +123,30 @@ async function run() {
       res.send(result);
      })
 
+    //  Instructor API
+    app.patch('/users/instructor/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updatedUser = {
+        $set: {
+          role: "instructor"
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedUser);
+      res.send(result);
+     })
+
+     app.get('/users/instructor/:email', verifyJWT, async(req, res)=>{
+      const email = req.params.email;
+      if(req.decoded.email != email){
+        res.send({admin: false});
+      }
+      const query = {email: email};
+      const user = await userCollection.findOne(query);
+      const result = {admin: user?.role === 'instructor'};
+      res.send(result);
+     })
+
 
     // Cart APIs
     app.get("/cart", verifyJWT, async (req, res) => {
