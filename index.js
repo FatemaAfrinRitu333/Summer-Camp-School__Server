@@ -54,6 +54,7 @@ async function run() {
     const instructorCollection = client.db("ChorusCamp").collection("instructors");
     const userCollection = client.db("ChorusCamp").collection("users");
     const cartCollection = client.db("ChorusCamp").collection("cart");
+    const addedClassCollection = client.db("ChorusCamp").collection("newClasses");
     // const paymentCollection = client.db("ChorusCamp").collection("payment");
 
     // jwt
@@ -130,6 +131,13 @@ async function run() {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
       const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // instructor added class api
+    app.post('/addedClass', async(req, res)=>{
+      const item = req.body;
+      const result = await addedClassCollection.insertOne(item);
       res.send(result);
     })
 
