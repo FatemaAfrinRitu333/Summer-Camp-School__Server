@@ -60,7 +60,7 @@ async function run() {
     // jwt
     app.post("/jwt", (req, res) => {
       const user = req.body;
-      console.log('user', user);
+      // console.log('user', user);
       const token = jwt.sign(user, process.env.TOKEN, { expiresIn: "1h" });
       res.send({ token });
     });
@@ -98,6 +98,20 @@ async function run() {
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
+
+     // Admin API
+     app.patch('/users/admin/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updatedUser = {
+        $set: {
+          role: "admin"
+        }
+      }
+     })
+
+     
+
 
     // Cart APIs
     app.get("/cart", verifyJWT, async (req, res) => {
@@ -140,6 +154,10 @@ async function run() {
       const result = await addedClassCollection.insertOne(item);
       res.send(result);
     })
+
+    // app.get('/addedClass', verifyJWT, async(req, res)=>{
+    //   const email = req.
+    // })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
