@@ -106,8 +106,10 @@ async function run() {
       const updatedUser = {
         $set: {
           role: "admin"
-        }
-      }
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedUser);
+      res.send(result);
      })
 
      app.get('/users/admin/:email', verifyJWT, async(req, res)=>{
