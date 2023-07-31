@@ -114,6 +114,7 @@ async function run() {
 
      app.get('/users/admin/:email', verifyJWT, async(req, res)=>{
       const email = req.params.email;
+      console.log('admin api get',email)
       if(req.decoded.email != email){
         res.send({admin: false});
       }
@@ -139,7 +140,7 @@ async function run() {
      app.get('/users/instructor/:email', verifyJWT, async(req, res)=>{
       const email = req.params.email;
       if(req.decoded.email != email){
-        res.send({admin: false});
+        res.send({instructor: false});
       }
       const query = {email: email};
       const user = await userCollection.findOne(query);
